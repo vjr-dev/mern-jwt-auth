@@ -1,0 +1,24 @@
+services:
+  backend-dev:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile.backend
+      target: dev
+    volumes:
+      - ./backend:/app
+    ports:
+      - "4004:4004"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://db:27017/mern-dev
+    depends_on:
+      - db
+  db:
+    image: mongo:latest
+    ports:
+      - "27016:27017"
+    volumes:
+      - mern_db:/data/db
+
+volumes:
+  mern_db:

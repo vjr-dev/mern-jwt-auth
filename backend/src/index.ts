@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.get("/health", (req, res) => {
   res.status(200).json({
-    status: "healthy",
+    status: "healthy as fuck",
   });
 });
 app.listen(4004, () => {
