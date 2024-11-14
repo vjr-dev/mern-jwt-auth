@@ -4,8 +4,10 @@ services:
       context: .
       dockerfile: backend/Dockerfile.backend
       target: dev
-    volumes:
+    restart: unless-stopped
+    volumes: # it will restart the container on code change
       - ./backend:/app
+      - /app/node_modules # ignore the node modules
     ports:
       - "4004:4004"
     environment:
@@ -15,10 +17,12 @@ services:
       - db
   db:
     image: mongo:latest
+    container_name: mongodb-mern
+    restart: unless-stopped # add so not everytime db goes down
     ports:
       - "27016:27017"
     volumes:
-      - mern_db:/data/db
+      - mern_db:/data/db # name it so data not get lost
 
 volumes:
   mern_db:
