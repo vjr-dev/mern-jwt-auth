@@ -5,6 +5,7 @@ import connectToDatabase from "./config/db";
 import { NODE_ENV, PORT, APP_ORIGIN } from "./constant/env";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler";
+import catchErrors from "./utils/catchErrors";
 
 const app = express();
 app.use(express.json());
@@ -22,16 +23,15 @@ app.use(
 
 app.use(cookieParser());
 
-app.get("/health", async (req, res, next) => {
-  try {
-    throw new Error("THis is test error");
+app.get(
+  "/health",
+  catchErrors(async (req, res, next) => {
+    throw new Error("This is test error");
     res.status(200).json({
-      status: "healthy as fuck",
+      status: "healthy enpoint",
     });
-  } catch (error) {
-    next(error);
-  }
-});
+  })
+);
 
 app.use(errorHandler);
 app.listen(4004, async () => {
